@@ -1,0 +1,5 @@
+{
+  "variant": "LSTM-Δ",
+  "exante_coverage_conf": 100.0,
+  "n_holdout": 12
+}

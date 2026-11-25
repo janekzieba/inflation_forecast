@@ -1,0 +1,14 @@
+{
+  "A": {
+    "window": 12,
+    "hidden": 32,
+    "dropout": 0.3,
+    "lr": 0.005
+  },
+  "B": {
+    "window": 12,
+    "hidden": 64,
+    "dropout": 0.1,
+    "lr": 0.001
+  }
+}

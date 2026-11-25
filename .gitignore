@@ -1,0 +1,23 @@
+# Środowiska Pythona
+.venv/
+.venv-*/
+venv/
+env/
+
+# Cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# IDE / system
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Pliki tymczasowe Office (blokady)
+~$*
+
+# Sekrety Streamlit (gdyby się pojawiły)
+.streamlit/secrets.toml

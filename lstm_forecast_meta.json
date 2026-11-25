@@ -1,0 +1,1 @@
+{"variant": "LSTM-Δ", "config": {"window": 12, "hidden": 64, "dropout": 0.1, "lr": 0.001}, "data_end": "2025-10-01", "interval_calibration": "błędy out-of-sample z testu Podziału B (2023 – koniec danych)"}

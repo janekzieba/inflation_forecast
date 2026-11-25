@@ -1,0 +1,52 @@
+// Inflation Prediction ETL
+digraph ETL_Architecture {
+	rankdir=LR ratio=fill size="12,8"
+	node [fontname=Helvetica fontsize=10 shape=box style=filled]
+	subgraph cluster_source {
+		color=lightgrey label="Źródło Danych (Extract)" style=dashed
+		NBP [label="NBP API / Portal
+(Statystyka)" color="#0277bd" fillcolor="#e1f5fe" shape=ellipse]
+		RawXLS [label="Plik Źródłowy
+(bazowa.xlsx)" fillcolor="#fff9c4" shape=note]
+	}
+	subgraph cluster_processing {
+		color=grey label="Przetwarzanie i Modelowanie (Transform)"
+		DataSource [label="data_source.py
+(Czyszczenie & ETL)" color="#ef6c00" fillcolor="#ffe0b2" shape=component]
+		FeatureEng [label="Inżynieria Cech
+(Lags, Rolling Mean)" color="#ef6c00" fillcolor="#ffe0b2" shape=component]
+		ARIMA [label="arima.py
+(AutoARIMA)" color="#2e7d32" fillcolor="#c8e6c9" shape=box style="rounded,filled"]
+		ML [label="ml_forecast_10y.py
+(XGBoost / RF)" color="#2e7d32" fillcolor="#c8e6c9" shape=box style="rounded,filled"]
+	}
+	subgraph cluster_storage {
+		color=grey label="Warstwa Danych (Load)"
+		CleanCSV [label="cpi_data.csv
+(Dane Historyczne)" fillcolor="#f0f4c3" shape=folder]
+		ForecastCSV [label="forecast_*.csv
+(Wyniki Prognoz)" fillcolor="#f0f4c3" shape=folder]
+		ValCSV [label="validation_data.csv
+(Metryki Błędów)" fillcolor="#f0f4c3" shape=folder]
+	}
+	subgraph cluster_app {
+		color=lightgrey label="Warstwa Prezentacji (Application)"
+		App [label="app.py
+(Streamlit Dashboard)" color="#4527a0" fillcolor="#d1c4e9" shape=tab]
+		User [label="Użytkownik Końcowy
+(Analiza/Symulacja)" fillcolor=white shape=ellipse]
+	}
+	NBP -> RawXLS [label=" Pobranie"]
+	RawXLS -> DataSource [label=" Odczyt"]
+	DataSource -> CleanCSV [label=" Zapis oczyszczonych"]
+	CleanCSV -> FeatureEng [label=" Ładowanie"]
+	FeatureEng -> ARIMA
+	FeatureEng -> ML
+	ARIMA -> ForecastCSV
+	ML -> ForecastCSV
+	ML -> ValCSV [label=" Backtesting" style=dashed]
+	CleanCSV -> App
+	ForecastCSV -> App
+	ValCSV -> App
+	App -> User [label=" Wizualizacja"]
+}
